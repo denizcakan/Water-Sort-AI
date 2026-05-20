@@ -7,8 +7,8 @@ FONT_SIZE = 24
 FONT_PATH = "freesansbold.ttf"
 
 TUBE_CAPACITY = 4
-MIN_TUBE_COUNT = 10
-MAX_TUBE_COUNT = 14
+MIN_TUBE_COUNT = 6
+MAX_TUBE_COUNT = 10
 
 # Sentinel value meaning no tube is currently selected.
 NO_SELECTION = -1
@@ -21,9 +21,5 @@ COLOR_CHOICES = [
     "dark green",
     "pink",
     "purple",
-    "dark gray",
-    "brown",
-    "light green",
-    "yellow",
-    "white",
+    "dark gray"
 ]
