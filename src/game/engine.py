@@ -1,21 +1,24 @@
 # Pure game state management for Water Sort — no pygame dependency.
 
 import copy
+from typing import Optional
 
 from .bfs_solver import find_solution
-from .logic import calc_move, check_victory, generate_level
+from .level_generation import LevelKey, generate_from_key, random_level_key, validate_level_key
+from .logic import calc_move, check_victory
 
 
 class GameEngine:
     """Manages Water Sort game state independently of any UI."""
 
-    def __init__(self) -> None:
+    def __init__(self, key: Optional[LevelKey] = None) -> None:
         self.tube_count: int = 0
+        self.level_key: Optional[LevelKey] = None
         self._tube_colors: list[list[int]] = []
         self._initial_colors: list[list[int]] = []
         self.solution_moves: list[tuple[int, int]] = []
         self.min_move_count: int = 0
-        self.new_game()
+        self.next_level(key)
 
     def get_board(self) -> list[list[int]]:
         """Return a deep copy of the current tube colors."""
@@ -45,11 +48,19 @@ class GameEngine:
         self._tube_colors = copy.deepcopy(self._initial_colors)
         self._clear_solution()
 
-    def new_game(self) -> None:
-        """Generate a new random level."""
-        self.tube_count, self._tube_colors = generate_level()
+    def next_level(self, key: Optional[LevelKey] = None) -> LevelKey:
+        """Load a level. Picks a random one when key is None; otherwise validates and loads key."""
+        if key is None:
+            key = random_level_key()
+        elif not validate_level_key(key):
+            raise ValueError(f"Invalid LevelKey: {key}")
+
+        self.level_key = key
+        self.tube_count = key.tube_count
+        self._tube_colors = generate_from_key(key)
         self._initial_colors = copy.deepcopy(self._tube_colors)
         self._clear_solution()
+        return key
 
     def _clear_solution(self) -> None:
         """Drop any cached solution so it is recomputed on the next solve() call."""

@@ -61,7 +61,7 @@ class WaterSortGame:
                         self.engine.restart()
                         self._reset_selection()
                     elif event.key == pygame.K_RETURN:
-                        self.engine.new_game()
+                        self.engine.next_level()
                         self._reset_selection()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self._handle_click(event.pos)

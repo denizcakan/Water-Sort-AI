@@ -1,29 +1,6 @@
 # Pure game logic for Water Sort — no pygame dependency.
 
-import random
-
-from .constants import MAX_TUBE_COUNT, MIN_TUBE_COUNT, TUBE_CAPACITY
-
-
-def generate_level() -> tuple[int, list[list[int]]]:
-    """Generate a random starting level. Returns (tube_count, tube_colors).
-
-    The last two tubes are always left empty to allow maneuvering.
-    Each color index appears exactly TUBE_CAPACITY times across all tubes.
-    """
-    tube_count = random.randint(MIN_TUBE_COUNT, MAX_TUBE_COUNT)
-    color_count = tube_count - 2
-
-    color_pool = [color for color in range(color_count) for _ in range(TUBE_CAPACITY)]
-    tube_colors: list[list[int]] = [[] for _ in range(tube_count)]
-
-    for i in range(color_count):
-        for _ in range(TUBE_CAPACITY):
-            color = random.choice(color_pool)
-            tube_colors[i].append(color)
-            color_pool.remove(color)
-
-    return tube_count, tube_colors
+from .constants import TUBE_CAPACITY
 
 
 def calc_move(
